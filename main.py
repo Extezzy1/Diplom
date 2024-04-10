@@ -20,11 +20,15 @@ logger = logging.getLogger(__name__)
 
 
 async def main():
-
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
     bot = Bot(token=config.bot_token, parse_mode=ParseMode.HTML)
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_routers(callbacks_router, commands_router)
     dp.update.middleware(DbSessionMiddleware(session_pool=session_maker))
+    dp["session_maker"] = session_maker
     # dp.callback_query
     # await proceed_schemas(async_engine, BaseModel.metadata)
     await bot.delete_webhook(drop_pending_updates=True)

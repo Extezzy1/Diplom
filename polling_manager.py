@@ -7,6 +7,7 @@ from typing import Any, Awaitable, Dict, List, Optional
 
 from aiogram import Bot
 from aiogram.dispatcher.dispatcher import DEFAULT_BACKOFF_CONFIG, Dispatcher
+from aiogram.enums import parse_mode, ParseMode
 from aiogram.exceptions import TelegramUnauthorizedError
 from aiogram.types import User
 from aiogram.utils.backoff import BackoffConfig
@@ -128,7 +129,7 @@ async def add_bot(
     polling_manager: PollingManager,
 ):
     try:
-        bot = Bot(token_bot)
+        bot = Bot(token_bot, parse_mode=ParseMode.HTML)
 
         if bot.id in polling_manager.polling_tasks:
             return "Такой магазин уже запущен!", "111", 0
@@ -141,6 +142,7 @@ async def add_bot(
             # on_bot_shutdown=on_bot_shutdown(bot),
             polling_manager=polling_manager,
             dp_for_new_bot=dp_for_new_bot,
+
         )
         bot_user = await bot.get_me()
         return f"Новый магазин запущен!: @{bot_user.username}", bot_user.username, bot_user.id

@@ -1,4 +1,5 @@
 from aiogram import Dispatcher
+from aiogram.enums import ParseMode
 from aiogram.utils.chat_action import ChatActionMiddleware
 
 from handlers.sub_bot.commands import commands_router
